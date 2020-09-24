@@ -136,6 +136,20 @@ var __assign = this && this.__assign || function () {
   return __assign.apply(this, arguments);
 };
 
+var __spreadArrays = this && this.__spreadArrays || function () {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+    s += arguments[i].length;
+  }
+
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) {
+    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
+      r[k] = a[j];
+    }
+  }
+
+  return r;
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -148,16 +162,42 @@ function () {
     this.data = userProps;
   }
 
+  ;
+
   User.prototype.get = function (propName) {
     if (this.data[propName]) {
       return this.data[propName];
     } else {
-      throw new Error("No such field " + propName + " in " + this.data.name + " User");
+      throw new Error("No such as field " + propName + " in " + this.data.name + " User");
     }
   };
 
+  ;
+
   User.prototype.set = function (update) {
     this.data = __assign(__assign({}, this.data), update);
+  };
+
+  ;
+
+  User.prototype.on = function (eventName, callback) {
+    if (this.events[eventName]) {
+      this.events[eventName] = __spreadArrays(this.events[eventName], [callback]);
+    } else {
+      this.events[eventName] = [callback];
+    }
+  };
+
+  ;
+
+  User.prototype.trigger = function (eventName) {
+    if (this.events[eventName]) {
+      this.events[eventName].forEach(function (event) {
+        event();
+      });
+    } else {
+      throw new Error("No such event as " + eventName + " in " + this.data.name + " User");
+    }
   };
 
   return User;
