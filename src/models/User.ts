@@ -1,10 +1,14 @@
+import axios from 'axios';
+import { AxiosResponse } from 'axios';
+
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 type Callback = () => {};
 
 interface UserProps {
   name: string,
   age: number,
-  gender: Gender
+  gender: Gender,
+  id?: number
 }
 
 interface UserPropsOptional {
@@ -14,6 +18,8 @@ interface UserPropsOptional {
 }
 
 export class User {
+  static path = `http://localhost:3000/users`
+
   private data: UserProps;
   private events: {
     [key: string]: Callback[]
@@ -26,8 +32,6 @@ export class User {
   get(propName: string): string | number {
     if (this.data[propName]) {
       return this.data[propName];
-    } else {
-      throw new Error(`No such as field ${propName} in ${this.data.name} User`);
     }
   };
 
@@ -50,6 +54,27 @@ export class User {
       })
     } else {
       throw new Error(`No such event as ${eventName} in ${this.data.name} User`)
+    }
+  }
+
+  fetch(): void {
+    try {
+      axios.get(`${User.path}/:${this.get('id')}`)
+        .then((response: AxiosResponse): void => {
+          this.set(response.data)
+        });
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  save(): void {
+    const id = this.get('id');
+
+    if (id) {
+      axios.put(`${User.path}:${id}`, this.data)
+    } else {
+      axios.post(`${User.path}`, this.data)
     }
   }
 }

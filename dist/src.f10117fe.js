@@ -117,108 +117,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/models/User.ts":[function(require,module,exports) {
-"use strict";
+})({"src/index.ts":[function(require,module,exports) {
 
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __spreadArrays = this && this.__spreadArrays || function () {
-  for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
-    s += arguments[i].length;
-  }
-
-  for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
-      r[k] = a[j];
-    }
-  }
-
-  return r;
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.User = void 0;
-
-var User =
-/** @class */
-function () {
-  function User(userProps) {
-    this.data = userProps;
-  }
-
-  ;
-
-  User.prototype.get = function (propName) {
-    if (this.data[propName]) {
-      return this.data[propName];
-    } else {
-      throw new Error("No such as field " + propName + " in " + this.data.name + " User");
-    }
-  };
-
-  ;
-
-  User.prototype.set = function (update) {
-    this.data = __assign(__assign({}, this.data), update);
-  };
-
-  ;
-
-  User.prototype.on = function (eventName, callback) {
-    if (this.events[eventName]) {
-      this.events[eventName] = __spreadArrays(this.events[eventName], [callback]);
-    } else {
-      this.events[eventName] = [callback];
-    }
-  };
-
-  ;
-
-  User.prototype.trigger = function (eventName) {
-    if (this.events[eventName]) {
-      this.events[eventName].forEach(function (event) {
-        event();
-      });
-    } else {
-      throw new Error("No such event as " + eventName + " in " + this.data.name + " User");
-    }
-  };
-
-  return User;
-}();
-
-exports.User = User;
-},{}],"src/index.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var User_1 = require("./models/User");
-
-var user = new User_1.User({
-  name: 'Yurii',
-  age: 19,
-  gender: 'Male'
-});
-},{"./models/User":"src/models/User.ts"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -246,7 +147,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51495" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59348" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
