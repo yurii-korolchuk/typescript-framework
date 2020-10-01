@@ -1,9 +1,13 @@
 type Callback = () => {};
 
 export class Eventing {
-  private events: {
+  private readonly events: {
     [key: string]: Callback[]
   };
+
+  constructor() {
+    this.events = {};
+  }
 
   on(eventName: string, callback: Callback): void {
     if (this.events[eventName]) {

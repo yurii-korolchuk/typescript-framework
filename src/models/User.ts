@@ -1,59 +1,26 @@
-import axios from 'axios';
-import { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
+import { Sync } from './Sync';
+import {Attributes} from './Attributes';
 
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 
-interface UserProps {
-  name: string,
-  age: number,
-  gender: Gender,
-  id?: number
-}
-
-interface UserPropsOptional {
+interface UserProps{
   name?: string,
   age?: number,
-  gender?: Gender
+  gender?: Gender,
+  id?: number
 }
 
 export class User {
   static path = `http://localhost:3000/users`
 
-  private data: UserProps;
+  public attributes: Attributes<UserProps>;
+  public events: Eventing = new Eventing();
+  public sync: Sync<UserProps> = new Sync<UserProps>(User.path);
 
-
-  constructor(userProps: UserProps) {
-    this.data = userProps;
-  };
-
-  get(propName: string): string | number {
-    if (this.data[propName]) {
-      return this.data[propName];
-    }
-  };
-
-  set(update: UserPropsOptional): void {
-    this.data = { ...this.data, ...update };
-  };
-
-  fetch(): void {
-    try {
-      axios.get(`${User.path}/:${this.get('id')}`)
-        .then((response: AxiosResponse): void => {
-          this.set(response.data)
-        });
-    } catch (e) {
-      console.log(e.message);
-    }
+  constructor(attributes: UserProps) {
+    this.attributes = new Attributes<UserProps>(attributes);
   }
 
-  save(): void {
-    const id = this.get('id');
 
-    if (id) {
-      axios.put(`${User.path}:${id}`, this.data)
-    } else {
-      axios.post(`${User.path}`, this.data)
-    }
-  }
 }
