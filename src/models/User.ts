@@ -22,5 +22,29 @@ export class User {
     this.attributes = new Attributes<UserProps>(attributes);
   }
 
+  get get() {
+    return this.attributes.get;
+  }
+
+  get set() {
+    return this.attributes.set;
+  }
+
+  get on() {
+    return this.events.on;
+  }
+
+  get trigger() {
+    return this.events.trigger;
+  }
+
+  get fetch() {
+    return this.sync.fetch;
+  }
+
+  get save() {
+    return this.sync.save;
+  }
+
 
 }

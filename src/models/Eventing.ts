@@ -9,7 +9,7 @@ export class Eventing {
     this.events = {};
   }
 
-  on(eventName: string, callback: Callback): void {
+  on = (eventName: string, callback: Callback): void => {
     if (this.events[eventName]) {
       this.events[eventName] = [...this.events[eventName], callback];
     } else {
@@ -17,13 +17,13 @@ export class Eventing {
     }
   };
 
-  trigger(eventName: string): void {
+  trigger = (eventName: string): void => {
     if (this.events[eventName]) {
       this.events[eventName].forEach(event => {
         event();
       })
     } else {
-      //throw new Error(`No such event as ${eventName} in ${this.data.name} User`)
+      throw new Error(`No such event as ${eventName}`);
     }
   }
 }
