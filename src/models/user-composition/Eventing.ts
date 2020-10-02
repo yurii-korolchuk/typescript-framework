@@ -23,6 +23,7 @@ export class Eventing {
         event();
       })
     } else {
+      console.log(eventName)
       throw new Error(`No such event as ${eventName}`);
     }
   }

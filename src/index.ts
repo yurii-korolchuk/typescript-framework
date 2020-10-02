@@ -1,11 +1,12 @@
 import { User } from './models/User';
 
-const user = new User({
-  name: 'kokarik'
-})
-
-console.log(user.get('name'));
+const user = User.buildUser({
+  name: 'kokarik',
+  age: 123
+});
 
 user.on('change', () => {
-  console.log(412421)
+  console.log(user)
 });
+
+user.save();

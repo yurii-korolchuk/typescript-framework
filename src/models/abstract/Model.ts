@@ -1,6 +1,6 @@
 import {AxiosPromise, AxiosResponse} from 'axios';
-import {Callback} from './Eventing';
-import {HasIdAndName} from './Sync';
+import {Callback} from '../user-composition/Eventing';
+import {HasIdAndName} from '../user-composition/Sync';
 
 export interface AttributesModel<T> {
   get<K extends keyof T>(key: K): T[K];
@@ -56,10 +56,10 @@ export abstract class Model<T extends HasIdAndName> {
   save(): void {
     this.sync.save(this.attributes.getAll())
       .then((response: AxiosResponse): void => {
-        this.trigger('save');
+        //this.trigger('save');
       })
-      .catch(() => {
-        this.trigger('error');
+      .catch(error => {
+        //this.trigger('error');
       })
   }
 }

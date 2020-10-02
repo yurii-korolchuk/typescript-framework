@@ -1,7 +1,7 @@
-import { Eventing } from './Eventing';
-import { Sync } from './Sync';
-import {Attributes} from './Attributes';
-import {Model} from './Model';
+import { Eventing } from './user-composition/Eventing';
+import { Sync } from './user-composition/Sync';
+import {Attributes} from './user-composition/Attributes';
+import {Model} from './abstract/Model';
 
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 
@@ -12,7 +12,7 @@ interface UserProps{
   id?: number
 }
 
-export class User extends Model<UserProps>{
+export class User extends Model<UserProps> {
   static path = `http://localhost:3000/users`;
 
   static buildUser = (attributes: UserProps): User => {

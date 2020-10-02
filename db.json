@@ -1,40 +1,14 @@
 {
   "users": [
     {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
+      "name": "kokarik",
+      "age": 123,
       "id": 1
     },
     {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
+      "name": "kokarik",
+      "age": 123,
       "id": 2
-    },
-    {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
-      "id": 3
-    },
-    {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
-      "id": 4
-    },
-    {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
-      "id": 5
-    },
-    {
-      "name": "fdafads",
-      "age": 421,
-      "gender": "m",
-      "id": 6
     }
   ]
 }

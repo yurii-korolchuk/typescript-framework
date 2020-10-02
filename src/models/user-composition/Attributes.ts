@@ -1,4 +1,4 @@
-import {AttributesModel} from './Model';
+import {AttributesModel} from '../abstract/Model';
 
 export class Attributes<T> implements AttributesModel<T>{
   private data: T;
