@@ -1,4 +1,6 @@
-export class Attributes<T> {
+import {AttributesModel} from './Model';
+
+export class Attributes<T> implements AttributesModel<T>{
   private data: T;
 
   constructor(props: T) {

@@ -1,7 +1,7 @@
 import { Eventing } from './Eventing';
 import { Sync } from './Sync';
 import {Attributes} from './Attributes';
-import {AxiosResponse} from 'axios';
+import {Model} from './Model';
 
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 
@@ -12,54 +12,14 @@ interface UserProps{
   id?: number
 }
 
-export class User {
-  static path = `http://localhost:3000/users`
+export class User extends Model<UserProps>{
+  static path = `http://localhost:3000/users`;
 
-  public attributes: Attributes<UserProps>;
-  public events: Eventing = new Eventing();
-  public sync: Sync<UserProps> = new Sync<UserProps>(User.path);
-
-  constructor(attributes: UserProps) {
-    this.attributes = new Attributes<UserProps>(attributes);
+  static buildUser = (attributes: UserProps): User => {
+    return new User(
+      new Attributes(attributes),
+      new Sync(User.path),
+      new Eventing()
+    )
   }
-
-  get get() {
-    return this.attributes.get;
-  }
-
-  get set() {
-    this.events.trigger('change');
-    return this.attributes.set;
-  }
-
-  get on() {
-    return this.events.on;
-  }
-
-  get trigger() {
-    return this.events.trigger;
-  }
-
-  fetch(): void {
-    const id = this.attributes.get('id');
-    if (id) {
-      this.sync.fetch(id).then((response: AxiosResponse): void => {
-        this.set(response.data);
-      });
-    } else {
-      throw new Error(`Cannot fetch ${this.attributes.get('name')}`);
-    }
-  }
-
-  save(): void {
-    this.sync.save(this.attributes.getAll())
-      .then((response: AxiosResponse): void => {
-        this.trigger('save');
-      })
-      .catch(() => {
-        this.trigger('error');
-      })
-  }
-
-
 }
