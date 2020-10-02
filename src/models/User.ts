@@ -40,10 +40,10 @@ export class User {
     return this.events.trigger;
   }
 
-  get fetch() {
+  fetch(): void {
     const id = this.attributes.get('id');
     if (id) {
-      return this.sync.fetch(id).then((response: AxiosResponse): void => {
+      this.sync.fetch(id).then((response: AxiosResponse): void => {
         this.set(response.data);
       });
     } else {
@@ -51,8 +51,14 @@ export class User {
     }
   }
 
-  get save() {
-    return this.sync.save;
+  save(): void {
+    this.sync.save(this.attributes.getAll())
+      .then((response: AxiosResponse): void => {
+        this.trigger('save');
+      })
+      .catch(() => {
+        this.trigger('error');
+      })
   }
 
 

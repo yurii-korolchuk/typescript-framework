@@ -1,4 +1,4 @@
-import axios, {AxiosPromise} from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
 interface hasId {
   id?: number;
@@ -15,13 +15,13 @@ export class Sync<T extends hasId> {
     }
   }
 
-  save = (data: T): void => {
+  save = (data: T): AxiosPromise => {
     const { id } = data;
 
     if (id) {
-      axios.put(`${this.rootUrl}:${id}`, data);
+      return axios.put(`${this.rootUrl}:${id}`, data);
     } else {
-      axios.post(`${this.rootUrl}`, data);
+      return axios.post(`${this.rootUrl}`, data);
     }
   }
 }
