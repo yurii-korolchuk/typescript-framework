@@ -2087,6 +2087,7 @@ function () {
   });
   Object.defineProperty(User.prototype, "set", {
     get: function get() {
+      this.events.trigger('change');
       return this.attributes.set;
     },
     enumerable: false,
@@ -2138,6 +2139,9 @@ var user = new User_1.User({
   name: 'kokarik'
 });
 console.log(user.get('name'));
+user.on('change', function () {
+  console.log(412421);
+});
 },{"./models/User":"src/models/User.ts"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

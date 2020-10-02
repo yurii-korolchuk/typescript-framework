@@ -1,6 +1,7 @@
 import { Eventing } from './Eventing';
 import { Sync } from './Sync';
 import {Attributes} from './Attributes';
+import {AxiosResponse} from 'axios';
 
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 
@@ -27,6 +28,7 @@ export class User {
   }
 
   get set() {
+    this.events.trigger('change');
     return this.attributes.set;
   }
 
@@ -39,7 +41,14 @@ export class User {
   }
 
   get fetch() {
-    return this.sync.fetch;
+    const id = this.attributes.get('id');
+    if (id) {
+      return this.sync.fetch(id).then((response: AxiosResponse): void => {
+        this.set(response.data);
+      });
+    } else {
+      throw new Error(`Cannot fetch ${this.attributes.get('name')}`);
+    }
   }
 
   get save() {

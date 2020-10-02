@@ -5,3 +5,7 @@ const user = new User({
 })
 
 console.log(user.get('name'));
+
+user.on('change', () => {
+  console.log(412421)
+});

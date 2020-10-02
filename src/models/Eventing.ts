@@ -1,4 +1,4 @@
-type Callback = () => {};
+type Callback = () => void;
 
 export class Eventing {
   private readonly events: {
