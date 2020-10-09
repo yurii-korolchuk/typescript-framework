@@ -117,7 +117,63 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/models/user-composition/Eventing.ts":[function(require,module,exports) {
+})({"src/view/UserForm.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UserForm = void 0;
+
+var UserForm =
+/** @class */
+function () {
+  function UserForm(parent, model) {
+    this.parent = parent;
+    this.model = model;
+  }
+
+  ;
+
+  UserForm.prototype.eventsMap = function () {
+    return {
+      'click:button': this.onButtonClick
+    };
+  };
+
+  UserForm.prototype.bindEvents = function (fragment) {
+    var eventsMap = this.eventsMap();
+    Object.keys(eventsMap).forEach(function (key) {
+      var _a = key.split(':'),
+          eventName = _a[0],
+          selector = _a[1];
+
+      fragment.querySelectorAll(selector).forEach(function (element) {
+        element.addEventListener(eventName, eventsMap[key]);
+      });
+    });
+  };
+
+  UserForm.prototype.onButtonClick = function () {
+    console.log('Hello');
+  };
+
+  UserForm.prototype.template = function () {
+    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input type=\"text\">\n        <button>Click me!</button>\n      </div>\n    ";
+  };
+
+  UserForm.prototype.render = function () {
+    var template = document.createElement('template');
+    template.innerHTML = this.template();
+    this.bindEvents(template.content);
+    this.parent.append(template.content);
+  };
+
+  return UserForm;
+}();
+
+exports.UserForm = UserForm;
+},{}],"src/models/user-composition/Eventing.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -2200,17 +2256,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var UserForm_1 = require("./view/UserForm");
+
 var User_1 = require("./models/User");
 
 var user = User_1.User.buildUser({
   name: 'kokarik',
-  age: 123
+  age: 20
 });
-user.on('change', function () {
-  console.log(user);
-});
-user.save();
-},{"./models/User":"src/models/User.ts"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var form = new UserForm_1.UserForm(document.querySelector('#root'), user);
+form.render();
+},{"./view/UserForm":"src/view/UserForm.ts","./models/User":"src/models/User.ts"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2238,7 +2294,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61610" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51915" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,12 +1,10 @@
+import { UserForm } from './view/UserForm';
 import { User } from './models/User';
 
 const user = User.buildUser({
   name: 'kokarik',
-  age: 123
-});
+  age: 20
+})
 
-user.on('change', () => {
-  console.log(user)
-});
-
-user.save();
+const form = new UserForm(document.querySelector('#root'), user);
+form.render();
