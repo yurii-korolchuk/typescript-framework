@@ -29,9 +29,9 @@ export abstract class Model<T extends HasIdAndName> {
     return this.attributes.get;
   }
 
-  get set() {
+  set(update: T): void {
+    this.attributes.set(update);
     this.events.trigger('change');
-    return this.attributes.set;
   }
 
   get on() {

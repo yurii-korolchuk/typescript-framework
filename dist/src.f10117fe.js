@@ -129,15 +129,42 @@ var UserForm =
 /** @class */
 function () {
   function UserForm(parent, model) {
+    var _this = this;
+
     this.parent = parent;
     this.model = model;
+
+    this.setRandomAgeHandler = function () {
+      _this.model.setRandomAge();
+    };
+
+    this.setNameHandler = function () {
+      var input = _this.parent.querySelector('input');
+
+      var name = input.value;
+
+      _this.model.set({
+        name: name
+      });
+    };
+
+    this.bindModel();
   }
 
   ;
 
+  UserForm.prototype.bindModel = function () {
+    var _this = this;
+
+    this.model.on('change', function () {
+      _this.render();
+    });
+  };
+
   UserForm.prototype.eventsMap = function () {
     return {
-      'click:button': this.onButtonClick
+      'click:.button-random-age': this.setRandomAgeHandler,
+      'click:.button-name': this.setNameHandler
     };
   };
 
@@ -154,15 +181,12 @@ function () {
     });
   };
 
-  UserForm.prototype.onButtonClick = function () {
-    console.log('Hello');
-  };
-
   UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input type=\"text\">\n        <button>Click me!</button>\n      </div>\n    ";
+    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input type=\"text\" class=\"name-input\">\n        <button class=\"button-name\">Change name</button>\n        <button class=\"button-random-age\">Set Random User Age</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.render = function () {
+    this.parent.innerHTML = '';
     var template = document.createElement('template');
     template.innerHTML = this.template();
     this.bindEvents(template.content);
@@ -2141,14 +2165,12 @@ function () {
     enumerable: false,
     configurable: true
   });
-  Object.defineProperty(Model.prototype, "set", {
-    get: function get() {
-      this.events.trigger('change');
-      return this.attributes.set;
-    },
-    enumerable: false,
-    configurable: true
-  });
+
+  Model.prototype.set = function (update) {
+    this.attributes.set(update);
+    this.events.trigger('change');
+  };
+
   Object.defineProperty(Model.prototype, "on", {
     get: function get() {
       return this.events.on;
@@ -2238,6 +2260,13 @@ function (_super) {
   function User() {
     return _super !== null && _super.apply(this, arguments) || this;
   }
+
+  User.prototype.setRandomAge = function () {
+    var age = Math.round(Math.random() * 100);
+    this.set({
+      age: age
+    });
+  };
 
   User.path = "http://localhost:3000/users";
 
