@@ -56,7 +56,7 @@ export abstract class Model<T extends HasIdAndName> {
   save(): void {
     this.sync.save(this.attributes.getAll())
       .then((response: AxiosResponse): void => {
-        //this.trigger('save');
+        this.attributes.set(response.data);
       })
       .catch(error => {
         //this.trigger('error');

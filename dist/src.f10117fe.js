@@ -117,43 +117,30 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/view/UserForm.ts":[function(require,module,exports) {
+})({"src/view/abstract/View.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserForm = void 0;
+exports.View = void 0;
+/*
+* T - type of Model we pass in View when extending some class,
+* K - interface of properties that T has
+*/
 
-var UserForm =
+var View =
 /** @class */
 function () {
-  function UserForm(parent, model) {
-    var _this = this;
-
+  function View(parent, model) {
     this.parent = parent;
     this.model = model;
-
-    this.setRandomAgeHandler = function () {
-      _this.model.setRandomAge();
-    };
-
-    this.setNameHandler = function () {
-      var input = _this.parent.querySelector('input').value;
-
-      if (input) {
-        _this.model.set({
-          name: input
-        });
-      }
-    };
-
     this.bindModel();
   }
 
   ;
 
-  UserForm.prototype.bindModel = function () {
+  View.prototype.bindModel = function () {
     var _this = this;
 
     this.model.on('change', function () {
@@ -161,14 +148,9 @@ function () {
     });
   };
 
-  UserForm.prototype.eventsMap = function () {
-    return {
-      'click:.button-random-age': this.setRandomAgeHandler,
-      'click:.button-name': this.setNameHandler
-    };
-  };
+  ;
 
-  UserForm.prototype.bindEvents = function (fragment) {
+  View.prototype.bindEvents = function (fragment) {
     var eventsMap = this.eventsMap();
     Object.keys(eventsMap).forEach(function (key) {
       var _a = key.split(':'),
@@ -181,11 +163,7 @@ function () {
     });
   };
 
-  UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input type=\"text\" class=\"name-input\">\n        <button class=\"button-name\">Change name</button>\n        <button class=\"button-random-age\">Set Random User Age</button>\n      </div>\n    ";
-  };
-
-  UserForm.prototype.render = function () {
+  View.prototype.render = function () {
     this.parent.innerHTML = '';
     var template = document.createElement('template');
     template.innerHTML = this.template();
@@ -193,11 +171,93 @@ function () {
     this.parent.append(template.content);
   };
 
-  return UserForm;
+  ;
+  return View;
 }();
 
+exports.View = View;
+},{}],"src/view/UserForm.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UserForm = void 0;
+
+var View_1 = require("./abstract/View");
+
+var UserForm =
+/** @class */
+function (_super) {
+  __extends(UserForm, _super);
+
+  function UserForm() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+    _this.setRandomAgeHandler = function () {
+      _this.model.setRandomAge();
+    };
+
+    _this.saveUser = function () {
+      _this.model.save();
+    };
+
+    _this.setNameHandler = function () {
+      var input = _this.parent.querySelector('input').value;
+
+      if (input) {
+        _this.model.set({
+          name: input
+        });
+      }
+    };
+
+    return _this;
+  }
+
+  UserForm.prototype.eventsMap = function () {
+    return {
+      'click:.button-random-age': this.setRandomAgeHandler,
+      'click:.button-name': this.setNameHandler,
+      'click:.button-save': this.saveUser
+    };
+  };
+
+  UserForm.prototype.template = function () {
+    return "\n      <div>\n        <input type=\"text\" class=\"name-input\" placeholder=\"" + this.model.get('name') + "\">\n        <button class=\"button-name\">Change name</button>\n        <button class=\"button-random-age\">Set Random User Age</button>\n        <button class=\"button-save\">Save User</button>\n      </div>\n    ";
+  };
+
+  return UserForm;
+}(View_1.View);
+
 exports.UserForm = UserForm;
-},{}],"src/models/user-composition/Eventing.ts":[function(require,module,exports) {
+},{"./abstract/View":"src/view/abstract/View.ts"}],"src/models/user-composition/Eventing.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -2077,7 +2137,7 @@ function () {
       var id = data.id;
 
       if (id) {
-        return axios_1.default.put(_this.rootUrl + ":" + id, data);
+        return axios_1.default.put(_this.rootUrl + "/" + id, data);
       } else {
         return axios_1.default.post("" + _this.rootUrl, data);
       }
@@ -2201,7 +2261,10 @@ function () {
   };
 
   Model.prototype.save = function () {
-    this.sync.save(this.attributes.getAll()).then(function (response) {//this.trigger('save');
+    var _this = this;
+
+    this.sync.save(this.attributes.getAll()).then(function (response) {
+      _this.attributes.set(response.data);
     }).catch(function (error) {//this.trigger('error');
     });
   };
@@ -2329,7 +2392,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51915" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62731" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

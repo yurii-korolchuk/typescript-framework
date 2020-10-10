@@ -1,5 +1,6 @@
 import { UserForm } from './view/UserForm';
 import { User } from './models/User';
+import axios from 'axios';
 
 const user = User.buildUser({
   name: 'kokarik',

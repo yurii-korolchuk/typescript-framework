@@ -1,14 +1,9 @@
 {
   "users": [
     {
-      "name": "kokarik",
-      "age": 123,
+      "name": "fdasfadsfdsa",
+      "age": 20,
       "id": 1
-    },
-    {
-      "name": "kokarik",
-      "age": 123,
-      "id": 2
     }
   ]
 }
