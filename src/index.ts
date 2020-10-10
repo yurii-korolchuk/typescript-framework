@@ -1,6 +1,5 @@
-import { UserForm } from './view/UserForm';
+import { UserEdit } from './view/UserEdit';
 import { User } from './models/User';
-import axios from 'axios';
 
 const user = User.buildUser({
   name: 'kokarik',
@@ -8,8 +7,9 @@ const user = User.buildUser({
 })
 const root = document.querySelector('#root')
 if (root) {
-  const form = new UserForm(root, user);
+  const form = new UserEdit(root, user);
   form.render();
+  console.log(form)
 } else {
   throw new Error('Root element not found');
 }
