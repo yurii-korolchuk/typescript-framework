@@ -139,13 +139,13 @@ function () {
     };
 
     this.setNameHandler = function () {
-      var input = _this.parent.querySelector('input');
+      var input = _this.parent.querySelector('input').value;
 
-      var name = input.value;
-
-      _this.model.set({
-        name: name
-      });
+      if (input) {
+        _this.model.set({
+          name: input
+        });
+      }
     };
 
     this.bindModel();
@@ -2293,8 +2293,14 @@ var user = User_1.User.buildUser({
   name: 'kokarik',
   age: 20
 });
-var form = new UserForm_1.UserForm(document.querySelector('#root'), user);
-form.render();
+var root = document.querySelector('#root');
+
+if (root) {
+  var form = new UserForm_1.UserForm(root, user);
+  form.render();
+} else {
+  throw new Error('Root element not found');
+}
 },{"./view/UserForm":"src/view/UserForm.ts","./models/User":"src/models/User.ts"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

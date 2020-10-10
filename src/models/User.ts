@@ -5,7 +5,7 @@ import {Model} from './abstract/Model';
 
 type Gender = 'Male' | 'Female' | 'M' | 'F' | 'male' | 'female' | 'm' | 'f' | 'other';
 
-interface UserProps{
+export interface UserProps{
   name?: string,
   age?: number,
   gender?: Gender,
